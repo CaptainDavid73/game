@@ -16,9 +16,9 @@ class Player():
         self.animation_jump = 1
         self.run_ani = 0
         self.jump_ani = 0
-        self.run_blit = pygame.image.load(f'D:\GameProjects\Tests\Art\Run_animation\{self.animation_run}.png')
-        self.jump_blit = pygame.image.load(f'D:\GameProjects\Tests\Art\Jump_animation\{self.animation_jump}.png')
-        self.slide_blit = pygame.image.load('D:\GameProjects\Tests\Art\Slide_animation\slide.png')
+        self.run_blit = pygame.image.load(f'Art\Run_animation\{self.animation_run}.png')
+        self.jump_blit = pygame.image.load(f'Art\Jump_animation\{self.animation_jump}.png')
+        self.slide_blit = pygame.image.load('Art\Slide_animation\slide.png')
 
     # main loop function.
     def main(self, screen):
@@ -61,7 +61,7 @@ class Player():
             self.run_ani = 1
             if self.animation_run > 4:
                 self.animation_run = 1
-            self.run_blit = pygame.image.load(f'D:\GameProjects\AstroGame\main\RunAni\{self.animation_run}.png')
+            self.run_blit = pygame.image.load(f'Art\Run_animation\{self.animation_run}.png')
 
         if self.jump is True:
             if 400 >= self.y >= 355 and self.vel > 0:
@@ -82,11 +82,11 @@ class Player():
                     self.animation_jump = 5
             if self.y > 400 and self.vel < 0:
                 self.animation_jump = 6
-            self.run_blit = pygame.image.load(f'D:\GameProjects\Tests\Art\Jump_animation\{self.animation_jump}.png')
+            self.run_blit = pygame.image.load(f'Art\Jump_animation\{self.animation_jump}.png')
 
         if self.y > 440:
             self.animation_run = 5
-            self.run_blit = pygame.image.load('D:\GameProjects\Tests\Art\Slide_animation\slide.png')
+            self.run_blit = pygame.image.load('Art\Slide_animation\slide.png')
 
     def collision(self, obs_rect):
         game_state = 0
