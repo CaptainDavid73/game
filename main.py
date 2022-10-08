@@ -2,6 +2,7 @@ import pygame, sys
 from pygame.locals import *
 import functions
 
+# l
 pygame.init()
 screen = pygame.display.set_mode((512, 480))
 clock = pygame.time.Clock()
