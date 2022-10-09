@@ -88,26 +88,87 @@ class Player():
             self.animation_run = 5
             self.run_blit = pygame.image.load('Art\Slide_animation\slide.png')
 
+    # Collision detection
     def collision(self, obs_rect):
-        game_state = 0
+        game_state = 1
         if self.player_rect.colliderect(obs_rect):
-            game_state = 1
+            game_state = 2
         return game_state
 
 
 class Objects():
 
+    # Object values and init
     def __init__(self, x, y, width, height):
         self.x, self.y = x, y
         self.width, self.height = width, height
         self.object_vel = 5
+        self.height_change = 0
+        self.point = 0
 
+    # Main loop function
     def main(self, screen):
         self.obstacle_rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(screen, (0, 0, 0), self.obstacle_rect)
         self.move()
+        self.points()
 
+    # object movements and mechanics
     def move(self):
         self.x -= self.object_vel
         if self.x < 0 - self.width:
             self.x = 512
+            self.height_change = random.randint(0, 4)
+        if self.height_change == 0:
+            self.y = 430
+            self.width = 50
+            self.height = 100
+        elif self.height_change == 1:
+            self.y = 410
+            self.width = 40
+            self.height = 100
+        elif self.height_change == 2:
+            self.y = 400
+            self.width = 30
+            self.height = 100
+        elif self.height_change == 3:
+            self.y = 150
+            self.width = 30
+            self.height = 300
+        elif self.height_change == 4:
+            self.y = 150
+            self.width = 40
+            self.height = 300
+
+    # point system and speed
+    def points(self):
+        if self.x < 0 - self.width:
+            self.point += 100
+            if self.point <= 1000:
+                self.object_vel += 0.01
+            else:
+                self.object_vel += 0.01 + (self.point/100000)
+            if self.object_vel > 11:
+                self.object_vel = 10
+
+
+class Title():
+
+    def __init__(self, y, vel):
+        self.y = y
+        self.vel = vel
+        self.title_blit = pygame.image.load('Art\Titlescreen_animation\TitleScreen.png.')
+        self.title_start_blit = pygame.image.load('Art\Titlescreen_animation\TitleScreenStart.png.')
+
+    def main(self, screen):
+        pygame.event.get()
+        k = pygame.key.get_pressed()
+        self.y -= self.vel
+        screen.blit(self.title_blit, (0, self.y))
+        if k[K_RETURN]:
+            self.vel = 5
+        else:
+            self.vel = 1
+        if self.y < 0:
+            self.vel = 0
+            screen.blit(self.title_start_blit, (0, self.y))
