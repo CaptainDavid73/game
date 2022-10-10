@@ -166,9 +166,30 @@ class Title():
         self.y -= self.vel
         screen.blit(self.title_blit, (0, self.y))
         if k[K_RETURN]:
-            self.vel = 5
+            self.vel = 3
         else:
             self.vel = 1
         if self.y < 0:
             self.vel = 0
             screen.blit(self.title_start_blit, (0, self.y))
+            if k[K_RETURN]:
+                return 1
+        return 0
+
+
+class Powerup():
+
+    def __init__(self, x, y, width, height):
+        self.x, self.y = x, y
+        self.width, self.height = width, height
+        self.vel = 5
+
+    def main(self, screen):
+        self.move()
+        self.power = pygame.Rect(self.x, self.y, self.width, self.height)
+        pygame.draw.rect(screen, (0, 0, 0), self.power)
+
+    def move(self):
+        self.x -= self.vel
+        if self.x < 0 - self.width:
+            self.x = 512
