@@ -38,23 +38,16 @@ while True:
         player.main(screen)
         obstacle.main(screen)
         powerup.main(screen)
+        game_state = player.collision1(obstacle.obstacle_rect)
         power_state = player.collision2(powerup.power_rect)
-        if power_state == 1:
-            player.main(screen)
-            obstacle.main(screen)
-            powerup.main(screen)
-            game_state = player.collision1(obstacle.obstacle_rect)
-            if game_state == 2:
-                pygame.quit()
-                sys.exit()
+
+        if game_state == 2:
+            pygame.quit()
+            sys.exit()
         if power_state == 2:
-            player.main(screen)
-            obstacle.main(screen)
-            powerup.main(screen)
-            game_state = player.collision1(obstacle.obstacle_rect)
-            if game_state == 2:
-                pygame.quit()
-                sys.exit()
+            pygame.quit()
+            sys.exit()
+
         if k[K_ESCAPE]:
             pygame.quit()
         for event in pygame.event.get():
