@@ -111,11 +111,14 @@ class Objects():
         self.object_vel = 5
         self.height_change = 0
         self.point = 0
+        self.font = pygame.font.Font('Fonts\jdide.ttf', 10)
 
     # Main loop function
     def main(self, screen):
         self.obstacle_rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(screen, (0, 0, 0), self.obstacle_rect)
+        self.player_points = self.font.render(('POINTS: ' + str(self.point)), True, '#000000')
+        screen.blit(self.player_points, (10, 10))
         self.move()
         self.points()
 
@@ -148,8 +151,8 @@ class Objects():
 
     # point system and speed
     def points(self):
-        if self.x < 0 - self.width:
-            self.point += 100
+        if self.x < 0:
+            self.point = self.point + 10
             if self.point <= 1000:
                 self.object_vel += 0.01
             else:
