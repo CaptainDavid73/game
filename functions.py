@@ -89,11 +89,17 @@ class Player():
             self.run_blit = pygame.image.load('Art\Slide_animation\slide.png')
 
     # Collision detection
-    def collision(self, obs_rect):
+    def collision1(self, obs_rect):
         game_state = 1
         if self.player_rect.colliderect(obs_rect):
             game_state = 2
         return game_state
+
+    def collision2(self, pow_rect):
+        power_state = 1
+        if self.player_rect.colliderect(pow_rect):
+            power_state = 2
+        return power_state
 
 
 class Objects():
@@ -147,7 +153,7 @@ class Objects():
             if self.point <= 1000:
                 self.object_vel += 0.01
             else:
-                self.object_vel += 0.01 + (self.point/100000)
+                self.object_vel += 0.01 + (self.point / 100000)
             if self.object_vel > 11:
                 self.object_vel = 10
 
@@ -177,19 +183,20 @@ class Title():
         return 0
 
 
-class Powerup():
+class Powers():
 
+    # Object values and init
     def __init__(self, x, y, width, height):
         self.x, self.y = x, y
         self.width, self.height = width, height
-        self.vel = 5
+        self.object_vel = 5
 
+    # Main loop function
     def main(self, screen):
+        self.power_rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        pygame.draw.rect(screen, (0, 0, 0), self.power_rect)
         self.move()
-        self.power = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(screen, (0, 0, 0), self.power)
 
+    # object movements and mechanics
     def move(self):
-        self.x -= self.vel
-        if self.x < 0 - self.width:
-            self.x = 512
+        self.x -= self.object_vel
