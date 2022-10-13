@@ -9,6 +9,7 @@ while True:
     clock = pygame.time.Clock()
 
     player = functions.Player(20, 440, 20, 30)
+    player_flying = functions.Playerflying(20, 440, 20, 30)
     obstacle = functions.Objects(512, 440, 10, 10)
     powerup = functions.Powers(512, 350, 10, 10)
     title = functions.Title(250, 1)
@@ -38,17 +39,14 @@ while True:
         k = pygame.key.get_pressed()
         screen.fill((255, 255, 255))
 
+        if power_state == 2:
+            None
+
         player.main(screen)
         obstacle.main(screen)
         powerup.main(screen)
 
-        game_state = player.collision1(obstacle.obstacle_rect)
-        power_state = player.collision2(powerup.power_rect)
-
         if game_state == 2:
-            pygame.quit()
-            sys.exit()
-        if power_state == 2:
             pygame.quit()
             sys.exit()
 
