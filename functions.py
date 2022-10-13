@@ -16,31 +16,46 @@ class Player():
         self.animation_jump = 1
         self.run_ani = 0
         self.jump_ani = 0
+        self.power_state = 1
+        self.tick = 0
         self.run_blit = pygame.image.load(f'Art\Run_animation\{self.animation_run}.png')
         self.jump_blit = pygame.image.load(f'Art\Jump_animation\{self.animation_jump}.png')
         self.slide_blit = pygame.image.load('Art\Slide_animation\slide.png')
 
     # main loop function.
-    def main(self, screen):
+    def main(self, screen, power_rect):
         self.player_rect = pygame.Rect(self.x, self.y, self.run_blit.get_width(), self.run_blit.get_height())
         # pygame.draw.rect(screen, (0, 0, 0), self.player_rect)
-        if self.y > 440:
-            screen.blit(self.run_blit, (self.x, 450))
+        self.collision2(power_rect)
+        if self.power_state == 1:
+            if self.y > 440:
+                screen.blit(self.run_blit, (self.x, 450))
+            else:
+                screen.blit(self.run_blit, (self.x, self.y))
+            self.move()
         else:
+            self.tick += 1
+            if self.tick > 300:
+                self.power_state = 1
+                self.tick = 0
             screen.blit(self.run_blit, (self.x, self.y))
-        self.move()
+            self.flying()
         self.animation()
+        print(self.tick)
 
     # movement mechanics for jumping and sliding.
     def move(self):
         pygame.event.get()
         k = pygame.key.get_pressed()
+
         if self.jump is False and k[K_SPACE] or k[K_UP]:
             self.jump = True
+
         if self.jump is True:
             self.y -= self.vel * 1.0
             self.vel -= 0.5
-            if self.vel < -10:
+            if self.y > 450:
+                self.y = 440
                 self.jump = False
                 self.vel = 10
 
@@ -88,6 +103,21 @@ class Player():
             self.animation_run = 5
             self.run_blit = pygame.image.load('Art\Slide_animation\slide.png')
 
+    def flying(self):
+        pygame.event.get()
+        k = pygame.key.get_pressed()
+        if k[K_SPACE] or k[K_UP]:
+            self.jump = True
+            self.vel = 10
+
+        if self.jump is True:
+            self.y -= self.vel * 1.0
+            self.vel -= 0.5
+            if self.y > 439:
+                self.y = 440
+                self.jump = False
+                self.vel = 0
+
     # Collision detection
     def collision1(self, obs_rect):
         game_state = 1
@@ -96,53 +126,8 @@ class Player():
         return game_state
 
     def collision2(self, pow_rect):
-        power_state = 1
         if self.player_rect.colliderect(pow_rect):
-            power_state = 2
-        return power_state
-
-
-class Playerflying():
-    # player values and init.
-    def __init__(self, x, y, width, height):
-        self.x, self.y = x, y
-        self.width, self.height = width, height
-        self.up = False
-        self.down = False
-        self.animation_jump = 2
-        self.counter = 0
-        self.jump_ani = 0
-        self.jump_blit = pygame.image.load(f'Art\Jump_animation\{self.animation_jump}.png')
-
-    # main loop function.
-    def main(self, screen):
-        self.player_rect = pygame.Rect(self.x, self.y, self.jump_blit.get_width(), self.jump_blit.get_height())
-        # pygame.draw.rect(screen, (0, 0, 0), self.player_rect)
-        screen.blit(self.jump_blit, (self.x, self.y))
-        self.move()
-        self.animation()
-
-    # movement mechanics for up and down.
-    def move(self):
-        pygame.event.get()
-        k = pygame.key.get_pressed()
-        if k[K_SPACE] or k[K_UP]:
-            self.y = self.y - 5
-
-        if k[K_DOWN]:
-            self.y = self.y + 5
-
-    # animations for flying
-    def animation(self):
-        self.counter = self.counter + 1
-        if self.counter < 5:
-            self.animation_jump = 2
-        else:
-            self.animation_jump = 3
-        if self.counter > 10:
-            self.counter = 0
-
-        self.jump_blit = pygame.image.load(f'Art\Jump_animation\{self.animation_jump}.png')
+            self.power_state = 2
 
 
 class Objects():
@@ -236,6 +221,7 @@ class Powers():
         self.x, self.y = x, y
         self.width, self.height = width, height
         self.object_vel = 5
+        self.power_rect = pygame.Rect(self.x, self.y, self.width, self.height)
 
     # Main loop function
     def main(self, screen):
@@ -247,5 +233,4 @@ class Powers():
     def move(self):
         self.x -= self.object_vel
         if self.x < 0:
-            self.x = 512
-
+            self.x = 10000
