@@ -23,6 +23,7 @@ while True:
 
         if title.main(screen) == 1:
             break
+
         if k[K_ESCAPE]:
             pygame.quit()
         for event in pygame.event.get():
@@ -31,13 +32,16 @@ while True:
                 sys.exit()
         pygame.display.update()
         clock.tick(60)
+
     while True:
         pygame.event.get()
         k = pygame.key.get_pressed()
         screen.fill((255, 255, 255))
+
         player.main(screen)
         obstacle.main(screen)
         powerup.main(screen)
+
         game_state = player.collision1(obstacle.obstacle_rect)
         power_state = player.collision2(powerup.power_rect)
 

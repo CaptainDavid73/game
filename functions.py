@@ -203,3 +203,4 @@ class Powers():
     # object movements and mechanics
     def move(self):
         self.x -= self.object_vel
+
