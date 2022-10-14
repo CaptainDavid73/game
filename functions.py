@@ -18,9 +18,12 @@ class Player():
         self.jump_ani = 0
         self.power_state = 1
         self.tick = 0
+        self.player_tick = 0
+        self.power_percent = 0
         self.run_blit = pygame.image.load(f'Art\Run_animation\{self.animation_run}.png')
         self.jump_blit = pygame.image.load(f'Art\Jump_animation\{self.animation_jump}.png')
         self.slide_blit = pygame.image.load('Art\Slide_animation\slide.png')
+        self.font = pygame.font.Font('Fonts\jdide.ttf', 10)
 
     # main loop function.
     def main(self, screen, power_rect):
@@ -28,21 +31,26 @@ class Player():
         # pygame.draw.rect(screen, (0, 0, 0), self.player_rect)
         self.collision2(power_rect)
         if self.power_state == 1:
+            self.power_percent = 0
             if self.y > 440:
                 screen.blit(self.run_blit, (self.x, 450))
             else:
                 screen.blit(self.run_blit, (self.x, self.y))
             self.move()
         else:
+            self.power_percent = 100
             self.tick += 1
             if self.tick > 300:
                 self.power_state = 1
                 self.tick = 0
-            screen.blit(self.run_blit, (self.x, self.y))
+            if self.y > 440:
+                screen.blit(self.run_blit, (self.x, 450))
+            else:
+                screen.blit(self.run_blit, (self.x, self.y))
             self.flying()
         self.animation()
-        print(self.tick)
-
+        self.player_tick = self.font.render(('POWER: ' + str(round(self.power_percent-(self.tick / 3), 1)) + ' %'), True, '#000000')
+        screen.blit(self.player_tick, (10, 30))
     # movement mechanics for jumping and sliding.
     def move(self):
         pygame.event.get()
@@ -78,7 +86,28 @@ class Player():
                 self.animation_run = 1
             self.run_blit = pygame.image.load(f'Art\Run_animation\{self.animation_run}.png')
 
-        if self.jump is True:
+        if self.jump is True and self.power_state == 1:
+            if 400 >= self.y >= 355 and self.vel > 0:
+                self.jump_ani += 1
+                if self.jump_ani == 4:
+                    self.jump_ani = 0
+                if self.jump_ani <= 2:
+                    self.animation_jump = 2
+                else:
+                    self.animation_jump = 3
+            if 335 < self.y <= 400 and self.vel < 0:
+                self.jump_ani += 1
+                if self.jump_ani == 4:
+                    self.jump_ani = 0
+                if self.jump_ani <= 2:
+                    self.animation_jump = 4
+                else:
+                    self.animation_jump = 5
+            if self.y > 400 and self.vel < 0:
+                self.animation_jump = 6
+            self.run_blit = pygame.image.load(f'Art\Jump_animation\{self.animation_jump}.png')
+
+        if self.jump is True and self.power_state == 2:
             if 400 >= self.y >= 355 and self.vel > 0:
                 self.jump_ani += 1
                 if self.jump_ani == 4:
@@ -108,7 +137,7 @@ class Player():
         k = pygame.key.get_pressed()
         if k[K_SPACE] or k[K_UP]:
             self.jump = True
-            self.vel = 10
+            self.vel = 7
 
         if self.jump is True:
             self.y -= self.vel * 1.0
@@ -117,11 +146,21 @@ class Player():
                 self.y = 440
                 self.jump = False
                 self.vel = 0
+        if self.slide is False and k[K_DOWN]:
+            self.slide = True
+        if self.slide is True:
+            self.y += self.slide_time * 0.2
+            self.slide_time -= 0.5
+            if self.slide_time < -10:
+                self.slide = False
+                self.slide_time = 10
 
     # Collision detection
     def collision1(self, obs_rect):
         game_state = 1
         if self.player_rect.colliderect(obs_rect):
+            game_state = 2
+        if self.y < 0:
             game_state = 2
         return game_state
 
@@ -169,13 +208,13 @@ class Objects():
             self.width = 30
             self.height = 100
         elif self.height_change == 3:
-            self.y = 150
+            self.y = 300
             self.width = 30
-            self.height = 300
+            self.height = 150
         elif self.height_change == 4:
-            self.y = 150
+            self.y = 300
             self.width = 40
-            self.height = 300
+            self.height = 150
 
     # point system and speed
     def points(self):
@@ -233,4 +272,4 @@ class Powers():
     def move(self):
         self.x -= self.object_vel
         if self.x < 0:
-            self.x = 10000
+            self.x = 5000
