@@ -14,8 +14,10 @@ class Player():
         self.vel = 10
         self.animation_run = 1
         self.animation_jump = 1
+        self.tp_animation = 1
         self.run_ani = 0
         self.jump_ani = 0
+        self.tp_ani = 0
         self.power_state = 1
         self.tick = 0
         self.player_tick = 0
@@ -23,6 +25,7 @@ class Player():
         self.run_blit = pygame.image.load(f'Art\Run_animation\{self.animation_run}.png')
         self.jump_blit = pygame.image.load(f'Art\Jump_animation\{self.animation_jump}.png')
         self.slide_blit = pygame.image.load('Art\Slide_animation\slide.png')
+        self.tp_blit = pygame.image.load(f'Art\TP_animation\{self.tp_animation}.png')
         self.font = pygame.font.Font('Fonts\jdide.ttf', 10)
 
     # main loop function.
@@ -51,6 +54,7 @@ class Player():
         self.animation()
         self.player_tick = self.font.render(('POWER: ' + str(round(self.power_percent-(self.tick / 3), 1)) + ' %'), True, '#000000')
         screen.blit(self.player_tick, (10, 30))
+
     # movement mechanics for jumping and sliding.
     def move(self):
         pygame.event.get()
