@@ -273,3 +273,33 @@ class Powers():
         self.x -= self.object_vel
         if self.x < 0:
             self.x = 5000
+
+
+class Gameover():
+
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.vel = 10
+        self.tp_ani = 0
+        self.tp_animation = 1
+        self.game_over = 0
+        self.screen_dim = 255
+        self.dead_blit = pygame.image.load(f'Art\Dead_animation\gOver.png')
+        self.tp_blit = pygame.image.load(f'Art\TP_animation\{self.tp_animation}.png')
+
+    def main(self, screen):
+        if self.y < 441:
+            screen.blit(self.dead_blit, (self.x, self.y))
+        self.y -= self.vel * 1.0
+        self.vel -= 0.5
+        if self.y >= 441:
+            self.y = 441
+            self.tp_ani += 1
+            if self.tp_ani >= 4:
+                self.tp_animation += 1
+                self.tp_ani = 0
+                if self.tp_animation > 5:
+                    self.game_over = 1
+            self.tp_blit = pygame.image.load(f'Art\TP_animation\{self.tp_animation}.png')
+            screen.blit(self.tp_blit, (self.x, self.y))
