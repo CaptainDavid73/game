@@ -2,6 +2,7 @@ import pygame, sys
 from pygame.locals import *
 import functions
 pygame.init()
+score = None
 
 while True:
     pygame.display.set_caption('Astrorun')
@@ -18,9 +19,9 @@ while True:
         pygame.event.get()
         screen.fill((0, 0, 0))
         k = pygame.key.get_pressed()
-        title.main(screen)
+        title.main(screen, score)
 
-        if title.main(screen) == 1:
+        if title.main(screen, score) == 1:
             break
 
         if k[K_ESCAPE]:
@@ -40,6 +41,7 @@ while True:
         powerup.main(screen)
         player.main(screen, powerup.power_rect)
         obstacle.main(screen)
+        score = obstacle.point
 
         if player.collision1(obstacle.obstacle_rect) == 2:
             break
@@ -56,8 +58,11 @@ while True:
     while True:
         pygame.event.get()
         k = pygame.key.get_pressed()
-        screen.fill((0, 0, 0))
+        dim = game_over.screen_dim
+        screen.fill((dim, dim, dim))
         game_over.main(screen)
+        if game_over.game_over == 1:
+            break
 
         if k[K_ESCAPE]:
             pygame.quit()

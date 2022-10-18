@@ -239,8 +239,13 @@ class Title():
         self.vel = vel
         self.title_blit = pygame.image.load('Art\Titlescreen_animation\TitleScreen.png.')
         self.title_start_blit = pygame.image.load('Art\Titlescreen_animation\TitleScreenStart.png.')
+        self.font = pygame.font.Font('Fonts\jdide.ttf', 20)
 
-    def main(self, screen):
+    def main(self, screen, score):
+        if score is not None:
+            self.font = pygame.font.Font('Fonts\jdide.ttf', 20)
+            self.player_points = self.font.render(('YOUR SCORE: ' + str(score)), True, '#FFFFFF')
+            screen.blit(self.player_points, (115, 50))
         pygame.event.get()
         k = pygame.key.get_pressed()
         self.y -= self.vel
@@ -293,6 +298,9 @@ class Gameover():
         self.tp_blit = pygame.image.load(f'Art\TP_animation\{self.tp_animation}.png')
 
     def main(self, screen):
+        self.screen_dim -= 10
+        if self.screen_dim <= 0:
+            self.screen_dim = 0
         if self.y < 441:
             screen.blit(self.dead_blit, (self.x, self.y))
         self.y -= self.vel * 1.0
@@ -305,5 +313,8 @@ class Gameover():
                 self.tp_ani = 0
                 if self.tp_animation > 5:
                     self.game_over = 1
+                    self.tp_animation = 1
+                    pygame.time.delay(500)
             self.tp_blit = pygame.image.load(f'Art\TP_animation\{self.tp_animation}.png')
             screen.blit(self.tp_blit, (self.x, self.y))
+
