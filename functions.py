@@ -36,7 +36,7 @@ class Player():
         if self.power_state == 1:
             self.power_percent = 0
             if self.y > 440:
-                screen.blit(self.run_blit, (self.x, 450))
+                screen.blit(self.run_blit, (self.x, 445))
             else:
                 screen.blit(self.run_blit, (self.x, self.y))
             self.move()
@@ -47,12 +47,12 @@ class Player():
                 self.power_state = 1
                 self.tick = 0
             if self.y > 440:
-                screen.blit(self.run_blit, (self.x, 450))
+                screen.blit(self.run_blit, (self.x, 445))
             else:
                 screen.blit(self.run_blit, (self.x, self.y))
             self.flying()
         self.animation()
-        self.player_tick = self.font.render(('POWER: ' + str(round(self.power_percent-(self.tick / 3), 1)) + ' %'), True, '#000000')
+        self.player_tick = self.font.render(('POWER: ' + str(round(self.power_percent-(self.tick / 3), 1)) + ' %'), True, '#FFFFFF')
         screen.blit(self.player_tick, (10, 30))
 
     # movement mechanics for jumping and sliding.
@@ -188,7 +188,7 @@ class Objects():
     def main(self, screen):
         self.obstacle_rect = pygame.Rect(self.x, self.y, self.width, self.height)
         pygame.draw.rect(screen, (0, 0, 0), self.obstacle_rect)
-        self.player_points = self.font.render(('POINTS: ' + str(self.point)), True, '#000000')
+        self.player_points = self.font.render(('POINTS: ' + str(self.point)), True, '#FFFFFF')
         screen.blit(self.player_points, (10, 10))
         self.move()
         self.points()
@@ -243,9 +243,9 @@ class Title():
 
     def main(self, screen, score):
         if score is not None:
-            self.font = pygame.font.Font('Fonts\jdide.ttf', 20)
-            self.player_points = self.font.render(('YOUR SCORE: ' + str(score)), True, '#FFFFFF')
-            screen.blit(self.player_points, (115, 50))
+            self.font = pygame.font.Font('Fonts\jdide.ttf', 10)
+            self.player_points = self.font.render(('YOUR SCORE WAS: ' + str(score)), True, '#FFFFFF')
+            screen.blit(self.player_points, (10, 20))
         pygame.event.get()
         k = pygame.key.get_pressed()
         self.y -= self.vel
@@ -270,11 +270,14 @@ class Powers():
         self.width, self.height = width, height
         self.object_vel = 5
         self.power_rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        self.power_blit = pygame.image.load('Art\Background\Powerup.png')
 
     # Main loop function
     def main(self, screen):
         self.power_rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(screen, (0, 0, 0), self.power_rect)
+        # pygame.draw.rect(screen, (0, 0, 0), self.power_rect)
+        if self.x > 19:
+            screen.blit(self.power_blit, (self.x, self.y))
         self.move()
 
     # object movements and mechanics
@@ -298,6 +301,8 @@ class Gameover():
         self.tp_blit = pygame.image.load(f'Art\TP_animation\{self.tp_animation}.png')
 
     def main(self, screen):
+        if self.y < 0:
+            self.y = 0
         self.screen_dim -= 10
         if self.screen_dim <= 0:
             self.screen_dim = 0
@@ -318,3 +323,25 @@ class Gameover():
             self.tp_blit = pygame.image.load(f'Art\TP_animation\{self.tp_animation}.png')
             screen.blit(self.tp_blit, (self.x, self.y))
 
+
+class Background():
+
+    def __init__(self, x, y):
+        self.x, self.y = x, y
+        self.speed_indicator = 0
+        self.vel = 5
+        self.background_blit = pygame.image.load(f'Art\Background\Background.png')
+
+    def main(self, screen):
+        self.x -= self.vel
+        if self.x < -520:
+            self.x = 0
+        if self.x == 0:
+            self.speed_indicator = self.speed_indicator + 10
+            if self.speed_indicator <= 1000:
+                self.vel += 0.01
+            else:
+                self.vel += 0.01 + (self.speed_indicator / 100000)
+            if self.vel > 11:
+                self.vel = 10
+        screen.blit(self.background_blit, (self.x, self.y))

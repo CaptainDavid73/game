@@ -11,9 +11,10 @@ while True:
 
     player = functions.Player(20, 440, 20, 30)
     obstacle = functions.Objects(512, 440, 10, 10)
-    powerup = functions.Powers(512, 350, 10, 10)
+    powerup = functions.Powers(400, 350, 10, 10)
     title = functions.Title(250, 1)
-    game_over = functions.Gameover(20, 440)
+    game_over = functions.Gameover(20, player.y)
+    background = functions.Background(0, 0)
 
     while True:
         pygame.event.get()
@@ -38,12 +39,14 @@ while True:
         k = pygame.key.get_pressed()
         screen.fill((255, 255, 255))
 
+        background.main(screen)
         powerup.main(screen)
         player.main(screen, powerup.power_rect)
         obstacle.main(screen)
         score = obstacle.point
 
         if player.collision1(obstacle.obstacle_rect) == 2:
+            game_over = functions.Gameover(20, player.y)
             break
 
         if k[K_ESCAPE]:
