@@ -183,18 +183,18 @@ class Objects():
         self.height_change = 0
         self.point = 0
         self.font = pygame.font.Font('Fonts\jdide.ttf', 10)
-        self.object_animation = 1
-        self.object1_blit = pygame.image.load(f'Art\Object_animation\{self.object_animation}.png')
 
     # Main loop function
     def main(self, screen):
         self.obstacle_rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        pygame.draw.rect(screen, (0, 0, 0), self.obstacle_rect)
+        # pygame.draw.rect(screen, (0, 0, 0), self.obstacle_rect)
         self.player_points = self.font.render(('POINTS: ' + str(self.point)), True, '#FFFFFF')
-        screen.blit(self.player_points, (10, 10))
-        screen.blit(self.object1_blit, (self.x, self.y-10))
         self.move()
         self.points()
+        self.object_blit = pygame.image.load(f'Art\Object_animation\{self.object_animation}.png')
+        self.object_animation = 1
+        screen.blit(self.player_points, (10, 10))
+        screen.blit(self.object_blit, (self.x, self.y - 17))
 
     # object movements and mechanics
     def move(self):
@@ -211,18 +211,22 @@ class Objects():
             self.y = 410
             self.width = 40
             self.height = 70
+            self.object_animation = 2
         elif self.height_change == 2:
             self.y = 400
             self.width = 30
             self.height = 80
+            self.object_animation = 3
         elif self.height_change == 3:
             self.y = 300
             self.width = 30
             self.height = 150
+            self.object_animation = 4
         elif self.height_change == 4:
             self.y = 300
             self.width = 40
             self.height = 150
+            self.object_animation = 5
 
     # point system and speed
     def points(self):
