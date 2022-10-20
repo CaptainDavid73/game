@@ -189,7 +189,7 @@ class Objects():
     # Main loop function
     def main(self, screen):
         self.obstacle_rect = pygame.Rect(self.x, self.y, self.width, self.height)
-        # pygame.draw.rect(screen, (0, 0, 0), self.obstacle_rect)
+        pygame.draw.rect(screen, (0, 0, 0), self.obstacle_rect)
         self.player_points = self.font.render(('POINTS: ' + str(self.point)), True, '#FFFFFF')
         screen.blit(self.player_points, (10, 10))
         screen.blit(self.object1_blit, (self.x, self.y-10))
@@ -333,19 +333,11 @@ class Background():
     def __init__(self, x, y):
         self.x, self.y = x, y
         self.speed_indicator = 0
-        self.vel = 5
         self.background_blit = pygame.image.load(f'Art\Background\Background.png')
 
-    def main(self, screen):
+    def main(self, screen, vel):
+        self.vel = vel
         self.x -= self.vel
         if self.x < -520:
             self.x = 0
-        if self.x == 0:
-            self.speed_indicator = self.speed_indicator + 10
-            if self.speed_indicator <= 1000:
-                self.vel += 0.01
-            else:
-                self.vel += 0.01 + (self.speed_indicator / 100000)
-            if self.vel > 11:
-                self.vel = 10
         screen.blit(self.background_blit, (self.x, self.y))

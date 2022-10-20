@@ -39,11 +39,12 @@ while True:
         k = pygame.key.get_pressed()
         screen.fill((255, 255, 255))
 
-        background.main(screen)
+        background.main(screen, obstacle.object_vel)
         powerup.main(screen)
         player.main(screen, powerup.power_rect)
         obstacle.main(screen)
         score = obstacle.point
+        print(background.vel, obstacle.object_vel)
 
         if player.collision1(obstacle.obstacle_rect) == 2:
             game_over = functions.Gameover(20, player.y)
