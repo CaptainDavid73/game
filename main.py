@@ -14,7 +14,7 @@ while True:
     powerup = functions.Powers(400, 350, 29, 48)
     title = functions.Title(250, 1)
     game_over = functions.Gameover(20, player.y)
-    background = functions.Background(0, 0)
+    background = functions.Background(0, 0, 0)
 
     while True:
         pygame.event.get()

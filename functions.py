@@ -334,14 +334,20 @@ class Gameover():
 
 class Background():
 
-    def __init__(self, x, y):
+    def __init__(self, x, y, x1):
         self.x, self.y = x, y
+        self.x_accent = x1
         self.speed_indicator = 0
         self.background_blit = pygame.image.load(f'Art\Background\Background.png')
+        self.stars_blit = pygame.image.load(f'Art\Background\StarsBackground1.png')
 
     def main(self, screen, vel):
         self.vel = vel
         self.x -= self.vel
-        if self.x < -520:
+        self.x_accent -= self.vel/2
+        if self.x < -1040:
             self.x = 0
+        if self.x_accent < -1040:
+            self.x_accent = 0
         screen.blit(self.background_blit, (self.x, self.y))
+        screen.blit(self.stars_blit, (self.x_accent, self.y))
