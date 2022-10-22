@@ -15,7 +15,6 @@ while True:
     title = functions.Title(250, 1)
     game_over = functions.Gameover(20, player.y)
     background = functions.Background(0, 0, 0)
-
     while True:
         pygame.event.get()
         screen.fill((0, 0, 0))

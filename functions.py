@@ -22,11 +22,13 @@ class Player():
         self.tick = 0
         self.player_tick = 0
         self.power_percent = 0
+        self.play_sound = False
         self.run_blit = pygame.image.load(f'Art\Run_animation\{self.animation_run}.png')
         self.jump_blit = pygame.image.load(f'Art\Jump_animation\{self.animation_jump}.png')
         self.slide_blit = pygame.image.load('Art\Slide_animation\slide.png')
         self.tp_blit = pygame.image.load(f'Art\TP_animation\{self.tp_animation}.png')
         self.font = pygame.font.Font('Fonts\jdide.ttf', 10)
+        self.jump_sound = pygame.mixer.Sound('Sound\Jump.ogg')
 
     # main loop function.
     def main(self, screen, power_rect):
@@ -51,6 +53,7 @@ class Player():
             else:
                 screen.blit(self.run_blit, (self.x, self.y))
             self.flying()
+        self.sound()
         self.animation()
         self.player_tick = self.font.render(('POWER: ' + str(round(self.power_percent-(self.tick / 3), 1)) + ' %'), True, '#FFFFFF')
         screen.blit(self.player_tick, (10, 30))
@@ -60,7 +63,7 @@ class Player():
         pygame.event.get()
         k = pygame.key.get_pressed()
 
-        if self.jump is False and k[K_SPACE] or k[K_UP]:
+        if self.jump is False and k[K_UP]:
             self.jump = True
 
         if self.jump is True:
@@ -79,6 +82,15 @@ class Player():
             if self.slide_time < -10:
                 self.slide = False
                 self.slide_time = 10
+
+    def sound(self):
+        if self.jump is True:
+            if self.play_sound is False:
+                self.play_sound = True
+                self.jump_sound.play()
+        else:
+            self.play_sound = False
+        print(self.play_sound, self.jump)
 
     # animations for running, jumping and sliding.
     def animation(self):
@@ -139,7 +151,7 @@ class Player():
     def flying(self):
         pygame.event.get()
         k = pygame.key.get_pressed()
-        if k[K_SPACE] or k[K_UP]:
+        if k[K_UP]:
             self.jump = True
             self.vel = 7
 
@@ -248,6 +260,7 @@ class Title():
         self.title_blit = pygame.image.load('Art\Titlescreen_animation\TitleScreen.png.')
         self.title_start_blit = pygame.image.load('Art\Titlescreen_animation\TitleScreenStart.png.')
         self.font = pygame.font.Font('Fonts\jdide.ttf', 20)
+        self.intro_sound = pygame.mixer.Sound('Sound\Intro.mp3')
 
     def main(self, screen, score):
         if score is not None:
@@ -256,6 +269,7 @@ class Title():
             screen.blit(self.player_points, (10, 20))
         pygame.event.get()
         k = pygame.key.get_pressed()
+
         self.y -= self.vel
         screen.blit(self.title_blit, (0, self.y))
         if k[K_RETURN]:
@@ -351,3 +365,4 @@ class Background():
             self.x_accent = 0
         screen.blit(self.background_blit, (self.x, self.y))
         screen.blit(self.stars_blit, (self.x_accent, self.y))
+
