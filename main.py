@@ -20,6 +20,9 @@ while True:
         screen.fill((0, 0, 0))
         k = pygame.key.get_pressed()
         title.main(screen, score)
+        pygame.mixer.music.load('Sound\song.mp3')
+        pygame.mixer.music.play(-1)
+        pygame.mixer.music.set_volume(0.3)
 
         if title.main(screen, score) == 1:
             break

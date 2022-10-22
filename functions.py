@@ -90,7 +90,6 @@ class Player():
                 self.jump_sound.play()
         else:
             self.play_sound = False
-        print(self.play_sound, self.jump)
 
     # animations for running, jumping and sliding.
     def animation(self):
@@ -260,7 +259,6 @@ class Title():
         self.title_blit = pygame.image.load('Art\Titlescreen_animation\TitleScreen.png.')
         self.title_start_blit = pygame.image.load('Art\Titlescreen_animation\TitleScreenStart.png.')
         self.font = pygame.font.Font('Fonts\jdide.ttf', 20)
-        self.intro_sound = pygame.mixer.Sound('Sound\Intro.mp3')
 
     def main(self, screen, score):
         if score is not None:
