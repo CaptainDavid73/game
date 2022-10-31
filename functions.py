@@ -29,6 +29,7 @@ class Player():
         self.tp_blit = pygame.image.load(f'Art\TP_animation\{self.tp_animation}.png')
         self.font = pygame.font.Font('Fonts\jdide.ttf', 10)
         self.jump_sound = pygame.mixer.Sound('Sound\Jump.ogg')
+        self.slide_sound = pygame.mixer.Sound('Sound\slide.mp3')
 
     # main loop function.
     def main(self, screen, power_rect):
@@ -91,6 +92,12 @@ class Player():
         else:
             self.play_sound = False
 
+        if self.slide is True:
+            if self.play_sound is False:
+                self.play_sound = True
+                self.slide_sound.play()
+        else:
+            self.play_sound = False
     # animations for running, jumping and sliding.
     def animation(self):
         self.run_ani += 1

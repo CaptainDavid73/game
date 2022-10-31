@@ -22,7 +22,7 @@ while True:
         title.main(screen, score)
         pygame.mixer.music.load('Sound\song.mp3')
         pygame.mixer.music.play(-1)
-        pygame.mixer.music.set_volume(0.3)
+        pygame.mixer.music.set_volume(0.5)
 
         if title.main(screen, score) == 1:
             break
