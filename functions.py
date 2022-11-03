@@ -22,14 +22,15 @@ class Player():
         self.tick = 0
         self.player_tick = 0
         self.power_percent = 0
-        self.play_sound = False
+        self.play_soundjump = False
+        self.play_soundslide = False
         self.run_blit = pygame.image.load(f'Art\Run_animation\{self.animation_run}.png')
         self.jump_blit = pygame.image.load(f'Art\Jump_animation\{self.animation_jump}.png')
         self.slide_blit = pygame.image.load('Art\Slide_animation\slide.png')
         self.tp_blit = pygame.image.load(f'Art\TP_animation\{self.tp_animation}.png')
         self.font = pygame.font.Font('Fonts\jdide.ttf', 10)
         self.jump_sound = pygame.mixer.Sound('Sound\Jump.ogg')
-        self.slide_sound = pygame.mixer.Sound('Sound\slide.mp3')
+        self.slide_sound = pygame.mixer.Sound('Sound\slide.ogg')
 
     # main loop function.
     def main(self, screen, power_rect):
@@ -86,18 +87,18 @@ class Player():
 
     def sound(self):
         if self.jump is True:
-            if self.play_sound is False:
-                self.play_sound = True
+            if self.play_soundjump is False:
+                self.play_soundjump = True
                 self.jump_sound.play()
         else:
-            self.play_sound = False
+            self.play_soundjump = False
 
         if self.slide is True:
-            if self.play_sound is False:
-                self.play_sound = True
+            if self.play_soundslide is False:
+                self.play_soundslide = True
                 self.slide_sound.play()
         else:
-            self.play_sound = False
+            self.play_soundslide = False
     # animations for running, jumping and sliding.
     def animation(self):
         self.run_ani += 1
